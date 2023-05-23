@@ -335,7 +335,7 @@
               onDragStart: function(e, datasetIndex, index, value) {
 
                 if (index != trialnum-1) {
-                //  return false
+                  return false
                 }
                 input2.options.plugins.annotation.annotations.box2.backgroundColor = "green"
               },
@@ -789,7 +789,7 @@ input1 = new Chart(ctx1, {
         round: 1, 
         showTooltip: true, 
         onDragStart: function(e, datasetIndex, index, value) {
-          if (index > trialnum-1) {
+          if (index > -1) {
             return false
           }
           input1.options.plugins.annotation.annotations.box2.backgroundColor = "green"
@@ -878,7 +878,7 @@ input2 = new Chart(ctx2, {
         round: 1, 
         showTooltip: true, 
         onDragStart: function(e, datasetIndex, index, value) {
-          if (index > trialnum-1) {
+          if (index > -1) {
             return false
           }
           input2.options.plugins.annotation.annotations.box2.backgroundColor = "green"
@@ -963,7 +963,7 @@ input3 = new Chart(ctx3, {
         round: 1, 
         showTooltip: true, 
         onDragStart: function(e, datasetIndex, index, value) {
-          if (index > trialnum-1) {
+          if (index > -1) {
             return false
           }
           input3.options.plugins.annotation.annotations.box2.backgroundColor = "green"
@@ -1336,7 +1336,7 @@ input1 = new Chart(ctx1, {
         round: 1, 
         showTooltip: true, 
         onDragStart: function(e, datasetIndex, index, value) {
-          if (index > trialnum-1) {
+          if (index > -1) {
             return false
           }
           input1.options.plugins.annotation.annotations.box2.backgroundColor = "green"
@@ -1425,7 +1425,7 @@ input2 = new Chart(ctx2, {
         round: 1, 
         showTooltip: true, 
         onDragStart: function(e, datasetIndex, index, value) {
-          if (index > trialnum-1) {
+          if (index > -1) {
             return false
           }
           input2.options.plugins.annotation.annotations.box2.backgroundColor = "green"
@@ -1510,7 +1510,7 @@ input3 = new Chart(ctx3, {
         round: 1, 
         showTooltip: true, 
         onDragStart: function(e, datasetIndex, index, value) {
-          if (index > trialnum-1) {
+          if (index > -1) {
             return false
           }
           input3.options.plugins.annotation.annotations.box2.backgroundColor = "green"
