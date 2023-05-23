@@ -81,8 +81,6 @@
 
 
 
-  condition = jsPsych.randomization.sampleWithoutReplacement(["CR"],1)
-  jsPsych.data.addProperties({condition: condition})
 
   // Trials
   trialnum = 1;
@@ -92,6 +90,9 @@
   output1_array = [];
   output2_array = [];
   output3_array = [];
+  group = null;
+
+
 
   const input_trial = {
     type: jsPsychHtmlButtonResponse,
@@ -176,7 +177,7 @@
 
 
 //  Require all inputs be entered
-      $(".jspsych-btn").prop('disabled', true);
+     // $(".jspsych-btn").prop('disabled', true);
       
 
 
@@ -1753,19 +1754,6 @@ var new_block = {
 
 
 
-if(condition == "CR"){
-  var block = {
-    timeline: [input_trial, conf_rating],
-    repetitions: 20
-  }
-}
-
-if(condition == "NoCR"){
-  var block = {
-    timeline: [input_trial, feedback],
-    repetitions: 20
-  }
-}
 
 
 // Knowledge Test
@@ -1902,8 +1890,34 @@ allow_backward: false
 
 
 
-  // Run the timeline
+
+
+async function createExperiment(){
+  const condition = await jsPsychPipe.getCondition("kf7Vo17oslAf");
+  if(condition == 0) { group = "NoCR" }
+  if(condition == 1) { group = "CR" }
+  jsPsych.data.addProperties({condition: group})
+
+if(group == "CR"){
+  var block = {
+    timeline: [input_trial, conf_rating],
+    repetitions: 20
+  }
+}
+
+if(group == "NoCR"){
+  var block = {
+    timeline: [input_trial, feedback],
+    repetitions: 20
+  }
+}
 jsPsych.run([preload, participant_info_paid, welcome, demographics, instructions, new_block, block, know_test, debug, save_data]);
+}
+
+createExperiment();
+
+  // Run the timeline
+
 
 
 
