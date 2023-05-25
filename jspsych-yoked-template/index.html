@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>USYD Cognitive Flexibility</title>
+
+  <!-- Load jsPsych and jquery-->
+  <script src="https://unpkg.com/jspsych@7.2.1"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation.min.js'></script>
+  <link href="https://unpkg.com/jspsych@7.2.3/css/jspsych.css" rel="stylesheet" type="text/css" />
+
+
+  <!-- Load jsPsych plugins-->
+  <script src="https://unpkg.com/@jspsych/plugin-instructions@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-external-html@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-preload@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-call-function"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych-contrib/plugin-pipe"></script>
+
+  <!-- Load the global environment-->
+  <script src="global-env.js"></script>
+
+  <!-- Load custom plugins from directory-->
+
+
+
+
+</head>
+<body></body>
+<script>
+
+
+
+//////////////////////////////////
+//         Gloabl Settings      //
+//////////////////////////////////
+
+// Initalise jsPsych
+  const jsPsych = initJsPsych({
+    on_finish: function(data) {
+     //window.location = redirect_link
+   }
+ })
+
+
+// Settings
+  const redirect_link ="https://app.prolific.co/submissions/complete?cc=XXXXXXX"
+
+ const attention_redirect_link ="https://app.prolific.co/submissions/complete?cc=XXXXXXX" // A seperate link for those who fail the attention check
+
+
+// Capture any url paramaters
+  const PROLIFIC_PID = jsPsych.data.getURLVariable('PROLIFIC_PID');
+  const SONA_PID = jsPsych.data.getURLVariable('id');
+
+
+  // Save to OSF
+  const subject_id = jsPsych.randomization.randomID(10);
+  const filename = `${subject_id}.csv`;
+
+
+
+  const save_data = {
+    type: jsPsychPipe,
+    action: "save",
+    experiment_id: "mbTea8AWyigB",
+    filename: filename,
+    data_string: ()=>jsPsych.data.get().csv()
+  };
+
+
+//////////////////////////////////
+
+
+
+
+
+ // Stimuli
+
+
+
+
+
+
+
+
+  // Trials
+
+  const hello_trial_C1 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: 'Hello world! You are in Condition 1'
+  }
+
+
+ const hello_trial_C2 = {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: 'Hello world! You are in Condition 2'
+  }
+
+
+  // Blocks
+
+
+
+
+
+
+
+
+
+
+// Set Condition
+
+
+condition_1_timeline = [ hello_trial_C1, save_data, save_trial, save_screen];
+condition_2_timeline = [ hello_trial_C2, save_data, save_trial, save_screen];
+
+
+async function createExperiment(){
+  const condition = await jsPsychPipe.getCondition("mbTea8AWyigB");
+  jsPsych.data.addProperties({condition: condition});
+  if(condition == 0) { timeline = condition_1_timeline; }
+  if(condition == 1) { timeline = condition_2_timeline; }
+  jsPsych.run(timeline);
+}
+
+
+createExperiment();
+
+
+
+
+//welcome, demographics
+
+  // Run the timeline
+ // jsPsych.run([demographics, hello_trial, save_data]);
+
+
+
+
+
+</script>
+</html>
