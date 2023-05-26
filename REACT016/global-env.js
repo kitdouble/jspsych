@@ -1,4 +1,5 @@
   var welcome = {
+    timeline: [{
       type: jsPsychSurveyText,
       questions: [{prompt: "Please enter your Prolific ID", name: 'prolificID', required:true}],
       preamble: "<font size = '15' color='#002080'><b>Welcome to the experiment!</b></font><br><br>",
@@ -8,7 +9,12 @@
         jsPsych.data.addProperties({participant_id: participant_id});
         if(PROLIFIC_PID != undefined){jsPsych.data.addProperties({PROLIFIC_PID: PROLIFIC_PID});};
       }
-    };
+    }
+    ],
+    conditional_function: function(){
+     if(SONAID == undefined){return true} else{ return false}
+ }
+  }
 
 
 var demographics = {
