@@ -1893,8 +1893,8 @@ allow_backward: false
 
 
 async function createExperiment(){
-  //const condition = await jsPsychPipe.getCondition("kf7Vo17oslAf");
-  const condition =  1;
+  const condition = await jsPsychPipe.getCondition("kf7Vo17oslAf");
+  //const condition =  1;
   if(condition == 0) { group = "NoCR" }
   if(condition == 1) { group = "CR" }
   jsPsych.data.addProperties({condition: group})
