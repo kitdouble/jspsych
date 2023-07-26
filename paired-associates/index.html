@@ -15,6 +15,7 @@
   <script src="https://unpkg.com/@jspsych/plugin-instructions@1.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.0.0"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-slider-response@1.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-external-html@1.0.0"></script>
   <script src="https://unpkg.com/@jspsych/plugin-preload@1.0.0"></script>
@@ -28,8 +29,9 @@
   <script src="global-env.js"></script>
   <script src="info_sheets.js"></script>
 
-  <!-- Load custom plugins from directory-->
 
+  <!-- Load custom plugins from directory-->
+  <script src="tetris.js"></script>
 
 
 
@@ -46,21 +48,22 @@
 // Initalise jsPsych
   const jsPsych = initJsPsych({
     on_finish: function(data) {
-     window.location = redirect_link
+      if(jsPsych.data.get().select('accuracy').mean() < 0.10){window.location = attention_redirect_link} else {window.location = redirect_link}
+     
    }
  })
 
 
 // Settings
-  const redirect_link ="https://app.prolific.co/submissions/complete?cc=XXXXXXX"
+  const redirect_link ="https://app.prolific.co/submissions/complete?cc=CHGWKNI0"
 
- const attention_redirect_link ="https://app.prolific.co/submissions/complete?cc=XXXXXXX" // A seperate link for those who fail the attention check
+ const attention_redirect_link ="https://app.prolific.co/submissions/complete?cc=C13PIUOF" // A seperate link for those who fail the attention check
 
 
 // Capture any url paramaters
  const PROLIFIC_PID = jsPsych.data.getURLVariable('PROLIFIC_PID');
  const SONA_PID = jsPsych.data.getURLVariable('id');
-
+ jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
 
   // Save to OSF
  const subject_id = jsPsych.randomization.randomID(10);
@@ -71,7 +74,7 @@
  const save_data = {
   type: jsPsychPipe,
   action: "save",
-  experiment_id: "chMUqOOe9hhf",
+  experiment_id: "nkRcUEHIZVF0",
   filename: filename,
   data_string: ()=>jsPsych.data.get().csv()
 };
@@ -80,309 +83,95 @@
 //////////////////////////////////
 
 
-
+var trialnum = 1;
 
 
  // Stimuli
 
-function drawCirc(c){
 
 
 
-// get a random integer between the range of [min,max]
-// @see https://stackoverflow.com/a/1527820/2124254
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-// generate a new tetromino sequence
-// @see https://tetris.fandom.com/wiki/Random_Generator
-  function generateSequence() {
-    const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
-
-    while (sequence.length) {
-      const rand = getRandomInt(0, sequence.length - 1);
-      const name = sequence.splice(rand, 1)[0];
-      tetrominoSequence.push(name);
-    }
-  }
-
-// get the next tetromino in the sequence
-  function getNextTetromino() {
-    if (tetrominoSequence.length === 0) {
-      generateSequence();
-    }
-
-    const name = tetrominoSequence.pop();
-    const matrix = tetrominos[name];
-
-  // I and O start centered, all others start in left-middle
-    const col = playfield[0].length / 2 - Math.ceil(matrix[0].length / 2);
-
-  // I starts on row 21 (-1), all others start on row 22 (-2)
-    const row = name === 'I' ? -1 : -2;
-
-    return {
-    name: name,      // name of the piece (L, O, etc.)
-    matrix: matrix,  // the current rotation matrix
-    row: row,        // current row (starts offscreen)
-    col: col         // current col
-  };
-}
-
-// rotate an NxN matrix 90deg
-// @see https://codereview.stackexchange.com/a/186834
-function rotate(matrix) {
-  const N = matrix.length - 1;
-  const result = matrix.map((row, i) =>
-    row.map((val, j) => matrix[N - j][i])
-    );
-
-  return result;
-}
-
-// check to see if the new matrix/row/col is valid
-function isValidMove(matrix, cellRow, cellCol) {
-  for (let row = 0; row < matrix.length; row++) {
-    for (let col = 0; col < matrix[row].length; col++) {
-      if (matrix[row][col] && (
-          // outside the game bounds
-        cellCol + col < 0 ||
-        cellCol + col >= playfield[0].length ||
-        cellRow + row >= playfield.length ||
-          // collides with another piece
-        playfield[cellRow + row][cellCol + col])
-        ) {
-        return false;
-    }
-  }
-}
-
-return true;
-}
-
-// place the tetromino on the playfield
-function placeTetromino() {
-  for (let row = 0; row < tetromino.matrix.length; row++) {
-    for (let col = 0; col < tetromino.matrix[row].length; col++) {
-      if (tetromino.matrix[row][col]) {
-
-        // game over if piece has any part offscreen
-        if (tetromino.row + row < 0) {
-          return showGameOver();
-        }
-
-        playfield[tetromino.row + row][tetromino.col + col] = tetromino.name;
-      }
-    }
-  }
-
-  // check for line clears starting from the bottom and working our way up
-  for (let row = playfield.length - 1; row >= 0; ) {
-    if (playfield[row].every(cell => !!cell)) {
-
-      // drop every row above this one
-      for (let r = row; r >= 0; r--) {
-        for (let c = 0; c < playfield[r].length; c++) {
-          playfield[r][c] = playfield[r-1][c];
-        }
-      }
-    }
-    else {
-      row--;
-    }
-  }
-
-  tetromino = getNextTetromino();
-}
-
-// show the game over screen
-function showGameOver() {
-  cancelAnimationFrame(rAF);
-  gameOver = true;
-
-  context.fillStyle = 'black';
-  context.globalAlpha = 0.75;
-  context.fillRect(0, canvas.height / 2 - 30, canvas.width, 60);
-
-  context.globalAlpha = 1;
-  context.fillStyle = 'white';
-  context.font = '36px monospace';
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
-  context.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2);
-  setTimeout(drawCirc, 5000);
-}
-
-const canvas = document.getElementById('jspsych-canvas-stimulus');
-const context = canvas.getContext('2d');
-
-const grid = 32;
-const tetrominoSequence = [];
-
-// keep track of what is in every cell of the game using a 2d array
-// tetris playfield is 10x20, with a few rows offscreen
-const playfield = [];
-
-// populate the empty state
-for (let row = -2; row < 20; row++) {
-  playfield[row] = [];
-
-  for (let col = 0; col < 10; col++) {
-    playfield[row][col] = 0;
-  }
-}
-
-// how to draw each tetromino
-// @see https://tetris.fandom.com/wiki/SRS
-const tetrominos = {
-  'I': [
-    [0,0,0,0],
-    [1,1,1,1],
-    [0,0,0,0],
-    [0,0,0,0]
-    ],
-  'J': [
-    [1,0,0],
-    [1,1,1],
-    [0,0,0],
-    ],
-  'L': [
-    [0,0,1],
-    [1,1,1],
-    [0,0,0],
-    ],
-  'O': [
-    [1,1],
-    [1,1],
-    ],
-  'S': [
-    [0,1,1],
-    [1,1,0],
-    [0,0,0],
-    ],
-  'Z': [
-    [1,1,0],
-    [0,1,1],
-    [0,0,0],
-    ],
-  'T': [
-    [0,1,0],
-    [1,1,1],
-    [0,0,0],
-    ]
-};
-
-// color of each tetromino
-const colors = {
-  'I': 'cyan',
-  'O': 'yellow',
-  'T': 'purple',
-  'S': 'green',
-  'Z': 'red',
-  'J': 'blue',
-  'L': 'orange'
-};
-
-let count = 0;
-let tetromino = getNextTetromino();
-let rAF = null;  // keep track of the animation frame so we can cancel it
-let gameOver = false;
-
-// game loop
-function loop() {
-  rAF = requestAnimationFrame(loop);
-  context.clearRect(0,0,canvas.width,canvas.height);
-
-  // draw the playfield
-  for (let row = 0; row < 20; row++) {
-    for (let col = 0; col < 10; col++) {
-      if (playfield[row][col]) {
-        const name = playfield[row][col];
-        context.fillStyle = colors[name];
-
-        // drawing 1 px smaller than the grid creates a grid effect
-        context.fillRect(col * grid, row * grid, grid-1, grid-1);
-      }
-    }
-  }
-
-  // draw the active tetromino
-  if (tetromino) {
-
-    // tetromino falls every 35 frames
-    if (++count > 35) {
-      tetromino.row++;
-      count = 0;
-
-      // place piece if it runs into anything
-      if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
-        tetromino.row--;
-        placeTetromino();
-      }
-    }
-
-    context.fillStyle = colors[tetromino.name];
-
-    for (let row = 0; row < tetromino.matrix.length; row++) {
-      for (let col = 0; col < tetromino.matrix[row].length; col++) {
-        if (tetromino.matrix[row][col]) {
-
-          // drawing 1 px smaller than the grid creates a grid effect
-          context.fillRect((tetromino.col + col) * grid, (tetromino.row + row) * grid, grid-1, grid-1);
-        }
-      }
-    }
-  }
-}
-
-// listen to keyboard events to move the active tetromino
-document.addEventListener('keydown', function(e) {
-  if (gameOver) return;
-
-  // left and right arrow keys (move)
-  if (e.which === 37 || e.which === 39) {
-    const col = e.which === 37
-    ? tetromino.col - 1
-    : tetromino.col + 1;
-
-    if (isValidMove(tetromino.matrix, tetromino.row, col)) {
-      tetromino.col = col;
-    }
-  }
-
-  // up arrow key (rotate)
-  if (e.which === 38) {
-    const matrix = rotate(tetromino.matrix);
-    if (isValidMove(matrix, tetromino.row, tetromino.col)) {
-      tetromino.matrix = matrix;
-    }
-  }
-
-  // down arrow key (drop)
-  if(e.which === 40) {
-    const row = tetromino.row + 1;
-
-    if (!isValidMove(tetromino.matrix, row, tetromino.col)) {
-      tetromino.row = row - 1;
-
-      placeTetromino();
-      return;
-    }
-
-    tetromino.row = row;
-  }
-});
-
-// start the game
-rAF = requestAnimationFrame(loop);
+var related_stimuli = [
+{cue: "ALLIGATOR", target: "CROCODILE"},
+{cue: "GEOMETRY", target: "MATH"},
+{cue: "ANSWER", target: "QUESTION"},
+{cue: "SEAT", target: "CHAIR"},
+{cue: "AUTUMN", target: "FALL"},
+{cue: "BOULDER", target: "ROCK"},
+{cue: "ALTER", target: "CHANGE"},
+{cue: "GAVEL", target: "JUDGE"},
+{cue: "CABLE", target: "TELEVISION"},
+{cue: "SEVERAL", target: "MANY"},
+{cue: "BLACK", target: "WHITE"},
+{cue: "GLANCE", target: "LOOK"},
+{cue: "BACK", target: "FRONT"},
+{cue: "SELLER", target: "BUYER"},
+{cue: "ACRE", target: "LAND"},
+{cue: "ADULT", target: "CHILD"},
+{cue: "SALARY", target: "MONEY"},
+{cue: "ALE", target: "BEER"},
+{cue: "BARRACUDA", target: "FISH"},
+{cue: "ADORABLE", target: "CUTE"},
+{cue: "DAIRY", target: "MILK"},
+{cue: "ARGUE", target: "FIGHT"},
+{cue: "BROOK", target: "STREAM"},
+{cue: "LATE", target: "EARLY"},
+{cue: "AWAKE", target: "ASLEEP"},
+{cue: "ADDICTION", target: "DRUG"},
+{cue: "BRIEF", target: "SHORT"},
+{cue: "ALLOW", target: "LET"},
+{cue: "ATLAS", target: "MAP"},
+{cue: "BOTTOM", target: "TOP"}
+  ]
 
 
-}
+var unrelated_stimuli = [
+{cue: "AGRICULTURE", target: "GROW"},
+{cue: "BARREL", target: "WHISKEY"},
+{cue: "AGREEMENT", target: "DOCUMENT"},
+{cue: "BREED", target: "KIDS"},
+{cue: "ASCEND", target: "GO"},
+{cue: "GARDEN", target: "PRETTY"},
+{cue: "AMBULANCE", target: "BLOOD"},
+{cue: "BINDER", target: "SCHOOL"},
+{cue: "SALAD", target: "EAT"},
+{cue: "ANNIHILATE", target: "WAR"},
+{cue: "AIRPLANE", target: "BIRD"},
+{cue: "AGENCY", target: "EMPLOYMENT"},
+{cue: "BATTLE", target: "DIE"},
+{cue: "SANDALS", target: "HOT"},
+{cue: "BASKET", target: "EGGS"},
+{cue: "ASPIRIN", target: "ADVIL"},
+{cue: "BUM", target: "JERK"},
+{cue: "CACTUS", target: "ARIZONA"},
+{cue: "ARTIST", target: "WRITER"},
+{cue: "SENSE", target: "REALITY"},
+{cue: "TAG", target: "CATCH"},
+{cue: "BUS", target: "TRAVEL"},
+{cue: "GENTLEMAN", target: "CHIVALRY"},
+{cue: "BIRD", target: "HOUSE"},
+{cue: "CALF", target: "ANIMAL"},
+{cue: "BILLBOARD", target: "HIGHWAY"},
+{cue: "BLUNT", target: "OUTSPOKEN"},
+{cue: "SELFISH", target: "BRAT"},
+{cue: "BRIBE", target: "POLITICIAN"},
+{cue: "LABYRINTH", target: "CONFUSION"}
+  ]
 
+
+const relatedness = jsPsych.randomization.sampleWithoutReplacement(["related", "unrelated"], 1)[0];
+jsPsych.data.addProperties({relatedness: relatedness});
+
+const fontsize = jsPsych.randomization.sampleWithoutReplacement(["consistent12", "consistent42", "inconsistent", "inconsistent"], 1)[0];
+jsPsych.data.addProperties({fontsize: fontsize});
+
+if(relatedness == "related"){stimuli = related_stimuli}
+  if(relatedness == "unrelated"){stimuli = unrelated_stimuli}
+
+
+    if(fontsize == "consistent12"){font_sizes = jsPsych.randomization.repeat([12,12], 15);}
+  if(fontsize == "consistent42"){font_sizes = jsPsych.randomization.repeat([42,42], 15);}
+  if(fontsize == "inconsistent"){font_sizes = jsPsych.randomization.repeat([12,42], 15);}
 
 
 
@@ -390,60 +179,324 @@ rAF = requestAnimationFrame(loop);
   // Trials
 
 
+  var JOL_pair = {
+    timeline: [
+    {
+      type: jsPsychSurveyText,
+      questions: function(){ return [{prompt: "<div style = 'padding-bottom: 36pt; font-size: "+ font_sizes[trialnum - 1] +"pt;'><strong>"+jsPsych.timelineVariable('cue')+" : "+jsPsych.timelineVariable('target')+"</strong></div><div style = 'padding-top: 40pt; '>&nbsp;</div>", name: "JOL"}, {prompt: ""}]},
+      on_load: function(){
+
+        $(document).ready(function() {
+          $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+              event.preventDefault();
+              return false;
+            }
+          });
+        });
+
+        var link = document.getElementById('input-1');
+        link.style.visibility = 'hidden';
+
+      // Hide second text box
+        var link2 = document.getElementById('input-0');
+        link2.style.visibility = 'hidden';
+
+      // Hide the response button
+        var link3 = document.getElementById('jspsych-survey-text-next');
+        link3.style.visibility = 'hidden';
 
 
-var hello_trial_C1 = {
-  type: jsPsychCanvasKeyboardResponse,
-  canvas_size: [640, 320],
-  stimulus: drawCirc,
-  choices: "NO_KEYS",
-  on_load: function(){
 
-    document.getElementById("jspsych-canvas-stimulus").style.border = "thick solid black";
 
+        jsPsych.pluginAPI.setTimeout(function () {
+
+     // this function ends the current trial and stores the response
+          jsPsych.finishTrial();
+
+        }, 4000);
+
+      },
+      on_finish: function(data){
+        data.phase = "training";
+        data.trialnum = trialnum;
+        data.font_size = font_sizes[trialnum - 1];
+        data.trial_name = "JOLPRESENT";
+        data.cue = jsPsych.timelineVariable('cue');
+        data.target = jsPsych.timelineVariable('target');
+      }
+    },
+    {
+      type: jsPsychSurveyText,
+      questions: function(){ return [{prompt: "<div style = 'font-size: "+ font_sizes[trialnum - 1] +"pt;'><strong>"+jsPsych.timelineVariable('cue')+" : "+jsPsych.timelineVariable('target')+"</strong></div><div style = 'padding-top: 40pt; '>How likely are you to correctly recall this item on a later test?</div>", name: "JOL"}, {prompt: "<i>Enter a value between 0 and 100 using your keyboard</i>"}]},
+      on_load: function(){
+
+
+             $(document).ready(function() {
+          $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+              event.preventDefault();
+              return false;
+            }
+          });
+        });
+
+        var link = document.getElementById('input-1');
+        link.style.visibility = 'hidden';
+
+      // Hide second tect box
+        var link2 = document.getElementById('input-0');
+        link2.setAttribute('size', '3');
+
+      // Hide the response button
+        var link3 = document.getElementById('jspsych-survey-text-next');
+        link3.style.visibility = 'hidden';
+
+
+
+        jsPsych.pluginAPI.setTimeout(function () {
+
+     // this function ends the current trial and stores the response
+          jsPsych.finishTrial({JOL: document.getElementById("input-0").value});
+
+        }, 4000);
+
+      },
+      on_finish: function(data){
+        data.phase = "training";
+        data.trialnum = trialnum;
+        data.font_size = font_sizes[trialnum - 1];
+        data.trial_name = "JOL";
+        trialnum = trialnum + 1;
+      }
+    },
+    {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: function(data){
+
+        if(jsPsych.data.get().last(1).values()[0].JOL == "") {return "Remember to enter a response between 0 and 100!"} else {return ""}
+        
+
+      },
+      choices: "NO_KEYS",
+      trial_duration: 1500,
+      on_finish: function(data){
+        data.trial_name = "fixation";
+      }
+    }
+
+    ],
+    timeline_variables: stimuli,
+    randomize_order: true
+  }
+
+
+
+
+
+
+
+
+  var pair = {
+    timeline: [
+    {
+      type: jsPsychSurveyText,
+      questions: function(){ return [{prompt: "<div style = 'padding-bottom: 36pt; font-size: "+ font_sizes[trialnum - 1] +"pt;'><strong>"+jsPsych.timelineVariable('cue')+" : "+jsPsych.timelineVariable('target')+"</strong></div><div style = 'padding-top: 40pt; '>&nbsp;</div>", name: "JOL"}, {prompt: ""}]},
+      on_load: function(){
+
+             $(document).ready(function() {
+          $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+              event.preventDefault();
+              return false;
+            }
+          });
+        });
+
+        var link = document.getElementById('input-1');
+        link.style.visibility = 'hidden';
+
+      // Hide second text box
+        var link2 = document.getElementById('input-0');
+        link2.style.visibility = 'hidden';
+
+      // Hide the response button
+        var link3 = document.getElementById('jspsych-survey-text-next');
+        link3.style.visibility = 'hidden';
+
+
+
+
+        jsPsych.pluginAPI.setTimeout(function () {
+
+     // this function ends the current trial and stores the response
+          jsPsych.finishTrial();
+
+        }, 8000);
+
+      },
+      on_finish: function(data){
+        data.phase = "training";
+        data.trialnum = trialnum;
+        data.font_size = font_sizes[trialnum - 1];
+        data.trial_name = "CONTROL";
+        data.cue = jsPsych.timelineVariable('cue');
+        data.target = jsPsych.timelineVariable('target');
+        trialnum = trialnum + 1;
+      }
+    },
+    {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: "",
+      choices: "NO_KEYS",
+      trial_duration: 1500,
+      on_finish: function(data){
+        data.trial_name = "fixation";
+      }
+    }
+
+    ],
+    timeline_variables: stimuli,
+    randomize_order: true
+  }
+
+
+
+
+
+
+
+
+  var tetris = {
+    type: jsPsychCanvasKeyboardResponse,
+    canvas_size: [640, 320],
+    stimulus: drawCirc,
+    choices: "NO_KEYS",
+    on_load: function(){
+
+      document.getElementById("jspsych-canvas-stimulus").style.border = "thick solid black";
+
+    },
+    trial_duration: 3*60*1000,
+    prompt: '<h3>Play a quick game of Tetris while we load the next part</h3><h4>Controls</h4><p>Move:</p><p><strong>Left</strong> and <strong>Right arrows</strong></p><p>Rotate:</p><strong>Up arrow</strong>',
+  }
+
+
+
+
+
+
+  var test_trial = {
+    timeline: [
+    {
+      type: jsPsychSurveyText,
+      questions: function(){ return [{prompt: "<div><strong>"+jsPsych.timelineVariable('cue')+" : ????</strong></div><div style = 'padding-top: 40pt; '>&nbsp;</div>", name: "answer"}, {prompt: "Please enter the 'pair' of the word shown above"}]},
+      on_load: function(){
+        var link = document.getElementById('input-1');
+        link.style.visibility = 'hidden';
+
+
+      },
+      on_finish: function(data){
+
+        data.phase = "test";
+        data.answer = data.response.answer;
+        data.cue = jsPsych.timelineVariable('cue');
+        data.target = jsPsych.timelineVariable('target');
+
+        console.log(data.response)
+    // Scoring
+        if(data.response.answer.toUpperCase() == data.target){data.accuracy = 1} else {data.accuracy = 0}
+
+
+
+      }
   },
-  trial_duration: 3*60*1000,
-  prompt: '<h3>Play a quick game of Tetris while we load the next part</h3><h4>Controls</h4><p>Move:</p><p><strong>Left</strong> and <strong>Right arrows</strong></p><p>Rotate:</p><strong>Up arrow</strong>',
+  {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus: "",
+    choices: "NO_KEYS",
+    trial_duration: 1000,
+    on_finish: function(data){
+      data.trial_name = "fixation"
+    }
+  }
+  ],
+    timeline_variables: stimuli,
+    randomize_order: true
+  }
+
+
+
+var instructions = {
+  type: jsPsychInstructions,
+  pages: ["<h2>Instructions</h2>In this task, you will memorize a series of word-pairs. For example,<br><br><strong>cat : mouse</strong><br><br>There will be 30 word-pairs for you to learn",
+    "<p>You will first study each of the word-pairs (e.g. cat : mouse), then later in the study you will see the first word and have to try and recall the pair (e.g. cat : ?????)</p>",
+    "You will have 8 seconds to study each word-pair in the study phase."
+
+
+    ],
+    show_clickable_nav: true
+};
+
+
+
+var JOL_instructions = {
+  type: jsPsychInstructions,
+  pages: ["<h2>Instructions</h2>In this task, you will memorize a series of word-pairs. For example,<br><br><strong>cat : mouse</strong><br><br>There will be 30 word-pairs for you to learn",
+    "<p>You will first study each of the word-pairs (e.g. cat : mouse), then later in the study you will see the first word and have to try and recall the pair (e.g. cat : ?????)</p>",
+    "While you are studying each word-pair, you will be asked to judge how likely it is that you will be able to recall the word-pair in the test. <strong>It is important that you complete this judgment</strong> ",
+    "You will have 8 seconds to study each word-pair <strong>and make your judgment</strong> in the study phase."
+
+    ],
+    show_clickable_nav: true
+};
+
+
+var begin_study= {
+  type:   jsPsychInstructions,
+  pages: [
+    "<h2>Study Phase</h2>You will now study each of the 30 word-pairs that you need to memorize."
+    ],
+  show_clickable_nav: true,
+  allow_backward: false,
+}
+
+var begin_test = {
+  type:   jsPsychInstructions,
+  pages: [
+    "<h2>Test Phase</h2>You will now be tested on the 30 word-pairs you studied. Press Next when you are ready to begin the test."
+    ],
+  show_clickable_nav: true,
+  allow_backward: false,
 }
 
 
 
-
-
-const hello_trial_C2 = {
-  type: jsPsychHtmlKeyboardResponse,
-  stimulus: 'Hello world! You are in Condition 2'
+var debug = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'Did you experience any issues while completing this study?', rows: 5}
+    ]
 }
 
 
-  // Blocks
+  control__timeline = [participant_info_paid, participant_info_SONA, instructions, begin_study, pair, tetris, begin_test, test_trial, debug, save_data, DEBRIEF_SONA];
+  JOL_timeline = [participant_info_paid, participant_info_SONA, JOL_instructions, begin_study, JOL_pair, tetris, begin_test, test_trial, debug, save_data, DEBRIEF_SONA];
+
+//
+  async function createExperiment(){
+    const condition = await jsPsychPipe.getCondition("nkRcUEHIZVF0");
+    if(condition == 0) { jsPsych.data.addProperties({judgment: "NoJOL"}); }
+    if(condition == 1) { jsPsych.data.addProperties({judgment: "JOL"}); }
+
+    if(condition == 0) { timeline = control__timeline; }
+    if(condition == 1) { timeline = JOL_timeline; }
+    jsPsych.run(timeline);
+  }
 
 
-
-
-
-
-
-
-
-
-// Set Condition
-
-
-condition_1_timeline = [  hello_trial_C1, save_data];
-condition_2_timeline = [ hello_trial_C1, save_data];
-
-
-async function createExperiment(){
-  const condition = await jsPsychPipe.getCondition("chMUqOOe9hhf");
-  jsPsych.data.addProperties({condition: condition});
-  if(condition == 0) { timeline = condition_1_timeline; }
-  if(condition == 1) { timeline = condition_2_timeline; }
-  jsPsych.run(timeline);
-}
-
-
-createExperiment();
+  createExperiment();
 
 
 
