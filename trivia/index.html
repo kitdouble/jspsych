@@ -108,6 +108,7 @@ const question_set = [
 { question: 'What is the last name of the man who wrote "Canterbury Tales"?', answer: 'Chaucer',  decoy: 'Dickens'},
 { question: 'What was Frank Lloyd Wright&#39;s profession?', answer: 'Architect',  decoy: 'Musician'},
 { question: 'What kind of poison did Socrates take as his execution?', answer: 'Hemlock',  decoy: 'Cyanide'},
+{ question: 'To show you are paying attention, please select Australia below?', answer: 'Australia',  decoy: 'England'},
     ]
 
 
@@ -137,7 +138,7 @@ option_right = [];
      
       
 
-      data.trialnum = trialnum;
+      
       data.rating = rating_type[trialnum -1];
       data.question = jsPsych.timelineVariable('question');
       data.correct_answer = jsPsych.timelineVariable('answer');
@@ -153,13 +154,11 @@ option_right = [];
       if(data.selected == data.correct_answer){data.accuracy = 1} else {data.accuracy = 0}
       data.decoy = jsPsych.timelineVariable('decoy');
 
-      console.log('Correct answer ' + data.correct_answer)
-      console.log('Selected ' + data.selected)
-      console.log('Accuracy ' + data.accuracy)
-      console.log('Conf ' + data.conf)
-
-
+   
+    if(data.correct_answer != "Australia"){
+      data.trialnum = trialnum;
       trialnum = trialnum + 1;
+    }
     },
     margin_vertical: '100px',
     margin_horizontal: '40px',
