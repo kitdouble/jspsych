@@ -236,6 +236,9 @@ const hello_trial_C1 = {
     on_finish: function(data){
 
 
+            data.rating = rating_type[trialnum -1];
+      data.question = jsPsych.timelineVariable('question');
+      data.correct_answer = jsPsych.timelineVariable('answer');
 
       if(data.correct_answer != "Australia"){
         data.trialnum = trialnum;
