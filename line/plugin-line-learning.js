@@ -790,8 +790,7 @@ rows.style.border = trial.grid_border;
               if((trial.choices[response.button] == trial.monotonic_label | trial.choices[response.button] == trial.conf_monotonic_label) & trial.category == "Mono"){trial.accuracy = 1}
               if(trial.choices[response.button] != trial.monotonic_label & trial.choices[response.button] != trial.conf_monotonic_label & trial.category != "Mono"){trial.accuracy = 1}
 
-              cosole.log(response.button)
-              cosole.log(trial.accuracy)
+             
 
               if(response.button == null){trial.accuracy = 0};
               
