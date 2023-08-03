@@ -74,7 +74,7 @@ jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
   const save_data = {
     type: jsPsychPipe,
     action: "save",
-    experiment_id: "EpwHWPxVThc7",
+    experiment_id: "TBazkdh5FjQ9",
     filename: filename,
     data_string: ()=>jsPsych.data.get().csv()
   };
@@ -123,6 +123,23 @@ var mono_label  = jsPsych.randomization.sampleWithoutReplacement(["Blicket", "Sn
 
 
 
+ const line_trial_CR = {
+    type: jsPsychLineLearning,
+    data: {test_type: "training_CR"},
+    category: jsPsych.timelineVariable('category'),
+    line_lengths: function(){
+      return jsPsych.randomization.sampleWithoutReplacement([6,7,8,9,10,11,12,13,14,15,16,17,18],3)
+    },
+    choices: ["Definitely Blicket", "Maybe Blicket", "Maybe Snarg", 'Definitely Snarg'],
+    monotonic_label: "Maybe " + mono_label,
+    conf_monotonic_label: "Definitely " + mono_label,
+    monotonic_pallette: mono_pallette,
+    trial_duration: 8000,
+   on_finish: function(data){
+      if(data
+   }
+
+}
 
 
 
@@ -273,6 +290,35 @@ const wait = {
 
   // Blocks
 
+const line_block_CR = {
+  timeline: [line_trial_CR, feedback],
+    on_timeline_finish: function() {
+      blocknum = blocknum + 1;
+  },
+  timeline_variables: [
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"}
+    ],
+   sample: {
+       type: 'custom',
+       fn: function(t){
+         return trippleTreat(t)
+
+
+       }}
+}
+
+  
 const line_block = {
   timeline: [line_trial, feedback],
     on_timeline_finish: function() {
@@ -354,13 +400,13 @@ var debug = {
 // Set Condition
 
 
-condition_1_timeline = [participant_info_paid, instructions, new_trianing_block, line_block, cat_JOL, new_trianing_block, line_block, cat_JOL, new_trianing_block, line_block, cat_JOL, new_trianing_block, line_block, cat_JOL, new_trianing_block, line_block, cat_JOL, new_trianing_block, line_block, test_block_start, test_block, debug, save_data];
+condition_1_timeline = [participant_info_paid, instructions, new_trianing_block, line_block_CR, new_trianing_block, line_block_CR, new_trianing_block, line_block_CR, new_trianing_block, line_block_CR, new_trianing_block, line_block_CR, new_trianing_block, line_block_CR, test_block_start, test_block, debug, save_data];
 
-condition_2_timeline = [participant_info_paid, instructions, new_trianing_block, line_block, wait, new_trianing_block, line_block, wait, new_trianing_block, line_block, wait, new_trianing_block, line_block, wait, new_trianing_block, line_block, wait, new_trianing_block, line_block, test_block_start, test_block, debug, save_data];
+condition_2_timeline = [participant_info_paid, instructions, new_trianing_block, line_block, new_trianing_block, line_block, new_trianing_block, line_block, new_trianing_block, line_block, new_trianing_block, line_block, new_trianing_block, line_block, test_block_start, test_block, debug, save_data];
 
 
 async function createExperiment(){
-  const condition = await jsPsychPipe.getCondition("EpwHWPxVThc7");
+  const condition = await jsPsychPipe.getCondition("TBazkdh5FjQ9");
   if (condition == 0){jsPsych.data.addProperties({condition: "JOL"});}
   if (condition == 1){jsPsych.data.addProperties({condition: "Control"});}
 
