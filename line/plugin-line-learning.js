@@ -794,7 +794,6 @@ rows.style.border = trial.grid_border;
               // gather the data to store for the trial
               var trial_data = {
                   rt: response.rt,
-                  stimulus: trial.stimulus,
                   category: trial.category,
                   response: response.button,
                   options: trial.choices,
