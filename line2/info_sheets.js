@@ -11,7 +11,7 @@ var participant_info_paid = {
     allow_backward: false
 }],
  conditional_function: function(){
-     if(typeof SONAID === 'undefined'){return true} else{ return false}
+     if(typeof SONA_PID === 'undefined'){return true} else{ return false}
  }
 }
 
@@ -31,7 +31,7 @@ var participant_info_SONA = {
     allow_backward: false
 }],
  conditional_function: function(){
-       if(typeof SONAID === 'undefined'){return false} else{ return true}
+       if(typeof SONA_PID === 'undefined'){return false} else{ return true}
  }
 }
 
@@ -50,6 +50,6 @@ var DEBRIEF_SONA = {
     allow_backward: false
 }],
  conditional_function: function(){
-        if(typeof SONAID === 'undefined'){return false} else{ return true}
+        if(typeof SONA_PID === 'undefined'){return false} else{ return true}
  }
 }
