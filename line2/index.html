@@ -61,7 +61,7 @@
 // Capture any url paramaters
   const PROLIFIC_PID = jsPsych.data.getURLVariable('PROLIFIC_PID');
   const SONA_PID = jsPsych.data.getURLVariable('SONAID');
-  const redirect_link ="https://sydneypsych.sona-systems.com/webstudy_credit.aspx?experiment_id=2953&credit_token=328b91e0da274cd187bf3a85b0ea3d08&survey_code=" + SONA_PID
+  const redirect_link ="https://app.prolific.com/submissions/complete?cc=CHGWKNI0"
 
 jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
 
@@ -75,7 +75,7 @@ jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
   const save_data = {
     type: jsPsychPipe,
     action: "save",
-    experiment_id: "OVhQnXd977DX",
+    experiment_id: "qAlLg2m3u847",
     filename: filename,
     data_string: ()=>jsPsych.data.get().csv()
   };
@@ -390,7 +390,7 @@ condition_2_timeline = [participant_info_paid, participant_info_SONA, instructio
 
 
 async function createExperiment(){
-  const condition = await jsPsychPipe.getCondition("OVhQnXd977DX");
+  const condition = await jsPsychPipe.getCondition("qAlLg2m3u847");
   if (condition == 0){jsPsych.data.addProperties({condition: "JOL"});}
   if (condition == 1){jsPsych.data.addProperties({condition: "Control"});}
 
