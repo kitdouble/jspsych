@@ -75,7 +75,7 @@ jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
   const save_data = {
     type: jsPsychPipe,
     action: "save",
-    experiment_id: "qAlLg2m3u847",
+    experiment_id: "J5JviIAxjt8p",
     filename: filename,
     data_string: ()=>jsPsych.data.get().csv()
   };
@@ -240,15 +240,7 @@ const cat_JOL = {
 {
   type: jsPsychHtmlSliderResponse,
     data: {trial_name: "cat_JOL"},
-    stimulus: `<p>How likely is it that you will be able to identify a <strong>Snarg</strong> in the future?</p>`,
-    require_movement: true,
-    labels: ["0<br>(not at all)", "20", '40', '60', "80",'100<br>(definitely)']
-},
-
-{
-  type: jsPsychHtmlSliderResponse,
-    data: {trial_name: "cat_JOL"},
-    stimulus: `<p>How likely is it that you will be able to identify a <strong>Blicket</strong> in the future?</p>`,
+    stimulus: `<p>Please rate the likelihood that you will correctly indicate whether items are Blicket or a Snarg on a later test</p>`,
     require_movement: true,
     labels: ["0<br>(not at all)", "20", '40', '60', "80",'100<br>(definitely)']
 }
@@ -390,7 +382,7 @@ condition_2_timeline = [participant_info_paid, participant_info_SONA, instructio
 
 
 async function createExperiment(){
-  const condition = await jsPsychPipe.getCondition("qAlLg2m3u847");
+  const condition = await jsPsychPipe.getCondition("J5JviIAxjt8p");
   if (condition == 0){jsPsych.data.addProperties({condition: "JOL"});}
   if (condition == 1){jsPsych.data.addProperties({condition: "Control"});}
 
