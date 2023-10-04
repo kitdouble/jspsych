@@ -162,6 +162,18 @@ var stimuli = [
   // Trials
 
 
+var efficacy = {
+  type: jsPsychHtmlSliderResponse,
+  data: {trial_name: 'self_efficacy'},
+stimulus: `<div style = "color: darkblue"><h2>Before you begin, please rate the percentage of word-pairs you think you will successfully recall on the final test</h2></div>`,
+  require_movement: true,
+  labels: ["0%", "25%", '50%', '75%', '100%'],
+  valueColour: "darkblue"
+}
+
+
+
+
   var JOL_pair = {
     timeline: [
     {
@@ -467,8 +479,8 @@ var debug = {
 // 
 // 
 
-  control__timeline = [participant_info_paid, participant_info_SONA, instructions, begin_study, pair, tetris, begin_test, test_trial, debug, save_data, DEBRIEF_SONA];
-  JOL_timeline = [participant_info_paid, participant_info_SONA, JOL_instructions, begin_study, JOL_pair, tetris, begin_test, test_trial, debug, save_data, DEBRIEF_SONA];
+  control__timeline = [participant_info_paid, participant_info_SONA, instructions, efficacy, begin_study, pair, tetris, begin_test, test_trial, debug, save_data, DEBRIEF_SONA];
+  JOL_timeline = [participant_info_paid, participant_info_SONA, JOL_instructions, efficacy, begin_study, JOL_pair, tetris, begin_test, test_trial, debug, save_data, DEBRIEF_SONA];
 
 //
   async function createExperiment(){
