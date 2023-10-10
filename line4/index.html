@@ -55,7 +55,7 @@
 // Settings
 
 
-
+jsPsych.data.addProperties({Difference: "5"});
 
 
 // Capture any url paramaters
@@ -134,7 +134,8 @@ var mono_label  = jsPsych.randomization.sampleWithoutReplacement(["Blicket", "Sn
     category: jsPsych.timelineVariable('category'),
     line_lengths: function(){
       if(exp_condition == 0 | exp_condition == 1) return jsPsych.randomization.sampleWithoutReplacement([6,7,8,9,10,11,12,13,14,15,16,17,18],3)
-      if(exp_condition == 2 | exp_condition == 3) return jsPsych.randomization.sampleWithoutReplacement([6,9,12,15,18],3)
+      if(exp_condition == 2 | exp_condition == 3) jsPsych.randomization.sampleWithoutReplacement([3,8,13,18],3)  
+      
     },
     colour_prob: function(){
 
