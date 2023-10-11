@@ -61,13 +61,13 @@ jsPsych.data.addProperties({Difference: "5"});
 // Capture any url paramaters
   var PROLIFIC_PID = jsPsych.data.getURLVariable('PROLIFIC_PID');
   var SONA_PID = jsPsych.data.getURLVariable('SONAID');
-  
+  var redirect_link = null;
 
  if(SONA_PID != undefined){
 
   jsPsych.data.addProperties({participant_id: SONA_PID});
   jsPsych.data.addProperties({Source: "SONA"});
-  const redirect_link = "https://sydneypsych.sona-systems.com/webstudy_credit.aspx?experiment_id=2953&credit_token=328b91e0da274cd187bf3a85b0ea3d08&survey_code=" + SONA_PID + "&id=" + SONA_PID;
+   redirect_link = "https://sydneypsych.sona-systems.com/webstudy_credit.aspx?experiment_id=2953&credit_token=328b91e0da274cd187bf3a85b0ea3d08&survey_code=" + SONA_PID + "&id=" + SONA_PID;
 
  }
 
@@ -76,7 +76,7 @@ jsPsych.data.addProperties({Difference: "5"});
 
   jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
   jsPsych.data.addProperties({Source: "Prolific"});
-  const redirect_link ="https://app.prolific.com/submissions/complete?cc=CHGWKNI0"
+   redirect_link ="https://app.prolific.com/submissions/complete?cc=CHGWKNI0"
 
   }
 
