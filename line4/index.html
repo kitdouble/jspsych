@@ -63,7 +63,7 @@ jsPsych.data.addProperties({Difference: "5"});
   var SONA_PID = jsPsych.data.getURLVariable('SONAID');
   var redirect_link = null;
 
- if(SONA_PID != undefined){
+  if(typeof SONA_PID != 'undefined'){
 
   jsPsych.data.addProperties({participant_id: SONA_PID});
   jsPsych.data.addProperties({Source: "SONA"});
@@ -72,7 +72,7 @@ jsPsych.data.addProperties({Difference: "5"});
  }
 
 
-  if(SONA_PID == undefined){
+  if(typeof SONA_PID === 'undefined'){
 
   jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
   jsPsych.data.addProperties({Source: "Prolific"});
