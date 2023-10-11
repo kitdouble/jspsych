@@ -717,15 +717,8 @@ var sum = trial.line_lengths.reduce((accumulator, currentValue) => {
 
 
   if(trial.empirical_col_probs == false) {
-  console.log(sum*trial.colour_prob[0]/100)
-  a1 = jsPsych.randomization.repeat("red", sum*trial.colour_prob[0]/100, false)
-  a2 = jsPsych.randomization.repeat("green", sum*trial.colour_prob[1]/100, false)
-  a3 = jsPsych.randomization.repeat("blue", sum*trial.colour_prob[2]/100, false)
-  a4 = jsPsych.randomization.repeat("yellow", sum*trial.colour_prob[3]/100, false)
-
-
-var colour_array = [a1,a2,a3,a4]
-
+  var eprobs = [Math.round(sum*trial.colour_prob[0]/100), Math.round(sum*trial.colour_prob[1]/100), Math.round(sum*trial.colour_prob[2]/100), Math.round(sum*trial.colour_prob[3]/100)]
+  var colour_array = jsPsych.randomization.repeat(["red", "green", "blue", "yellow"], eprobs, false)
 
 }
 
@@ -753,7 +746,7 @@ for (var square of squares) {
 
 
 var squares = document.getElementsByClassName('col' + col_to_show2);
-i = 0;
+
 
 for (var square of squares) {
   rows_line2.forEach(function(entry) {
@@ -771,7 +764,7 @@ for (var square of squares) {
 
 
 var squares = document.getElementsByClassName('col' + col_to_show3);
-i = 0;
+
 
 for (var square of squares) {
   rows_line3.forEach(function(entry) {
