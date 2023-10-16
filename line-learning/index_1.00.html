@@ -94,7 +94,7 @@
   const save_data = {
     type: jsPsychPipe,
     action: "save",
-    experiment_id: "l2pPA0D6WjPd",
+    experiment_id: "xuO2PaUjFdAJ",
     filename: filename,
     data_string: ()=>jsPsych.data.get().csv()
   };
@@ -438,7 +438,7 @@ condition_2_timeline = [participant_info_paid, participant_info_SONA, instructio
 
 exp_condition = null;
 async function createExperiment(){
-  const condition = await jsPsychPipe.getCondition("l2pPA0D6WjPd");
+  const condition = await jsPsychPipe.getCondition("xuO2PaUjFdAJ");
   if (condition == 0){jsPsych.data.addProperties({condition: "JOL"});}
   if (condition == 1){jsPsych.data.addProperties({condition: "Control"});}
 
