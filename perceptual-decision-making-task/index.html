@@ -41,6 +41,7 @@
   <script src="staircase2edit.js"></script>
   <script src="staircase.js"></script>
   <script src="dot-difference-functions.js"></script>
+  <script src="questionnaires.js"></script>
 
 
   <!-- Some custom CSS-->
@@ -63,9 +64,9 @@
 
    },
    on_finish: function(data) {
-    if(aborted == true){alert("You must use Chrome or Firefox to complete this experiment.")}
-    else if(jsPsych.data.get().select('correct').mean() < 0.10){window.location = attention_redirect_link} else {window.location = redirect_link}
-   // jsPsych.data.get().localSave('csv','mydata.csv');
+   if(aborted == true){alert("You must use Chrome or Firefox to complete this experiment.")}
+   else if(jsPsych.data.get().select('correct').mean() < 0.10){window.location = attention_redirect_link} else {window.location = redirect_link}
+    //jsPsych.data.get().localSave('csv','mydata.csv');
   }
 })
 
@@ -210,7 +211,7 @@ var new_block = {
 var instructions = {
   type: jsPsychInstructions,
   pages: [
-    '<p class="instructions">Welcome to the study!</p>' +
+    '<p class="instructions">Welcome to the task!</p>' +
     '<p class="instructions">In this task, we will ask you to judge which of two images contains more dots, before asking you to rate your confidence in your judgement.</p>' +
     '<p class="instructions">At the beginning of each trial, you will be presented with a black cross in the middle of the screen. Focus your attention on it. Then, two black boxes with a number of white dots will be flashed and you will be asked to judge which box had a higher number of dots.</p>' +
     '<p class="instructions">If the box on the <strong>left</strong> had more dots, <strong>press W</strong>.<br> If the box on the <strong>right</strong> had more dots, <strong> press E</strong>.</p>' +
@@ -566,6 +567,12 @@ var dot_trial = {
     data.stimdevi = jsPsych.data.get().filter({trial_type: "Stimulus Presentation"}).last().values()[0].stimdevi;
     data.trial_type = "Summary Trial"
     trialnum++;
+
+    data.Extra = data.Extra;
+    data.Agree = data.Agree;
+    data.Consc = data.Consc;
+    data.EmoStab = data.EmoStab;
+    data.Open = data.Open;
   }
 },
 
@@ -649,8 +656,8 @@ var debug = {
 // Set Condition
 
 // browser_check, enter_fullscreen, 
-//browser_check, enter_fullscreen, instructions, practice_block, practice_end, conf_instruc, test_start,
-condition_1_timeline = [browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, instructions, practice_block, practice_end, conf_instruc, test_start, test_block, new_block, test_block, new_block, test_block, debug, save_data, DEBRIEF_SONA];
+//browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, questions, instructions, practice_block, practice_end, conf_instruc, test_start, test_block, new_block, test_block, new_block, test_block, debug, save_data, DEBRIEF_SONA
+condition_1_timeline = [ browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, questions, instructions, practice_block, practice_end, conf_instruc, test_start, test_block, new_block, test_block, new_block, test_block, debug, save_data, DEBRIEF_SONA];
 condition_2_timeline = [hello_trial_C2, debug, save_data];
 
 
