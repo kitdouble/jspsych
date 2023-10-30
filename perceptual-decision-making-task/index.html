@@ -101,7 +101,7 @@
     jsPsych.data.addProperties({participant_id: SONA_PID});
     jsPsych.data.addProperties({Source: "SONA"});
     console.log("sona")
-    redirect_link = "https://sydneypsych.sona-systems.com/webstudy_credit.aspx?experiment_id=2953&credit_token=328b91e0da274cd187bf3a85b0ea3d08&survey_code=" + SONA_PID + "&id=" + SONA_PID;
+    redirect_link = "https://sydneypsych.sona-systems.com/webstudy_credit.aspx?experiment_id=2941&credit_token=fb4a8dc5920b48c0b147db89135036fc&survey_code=" + SONA_PID + "&id=" + SONA_PID;
   attention_redirect_link = "https://sydney.au1.qualtrics.com/jfe/form/SV_3h2qh8pBAnv00QK?SONA_PID=" + SONA_PID + "accuracy=" + jsPsych.data.get().filter({trial_type: "Summary Trial"}).select('correct').mean(); // A seperate link for those who fail the attention check
   
 
