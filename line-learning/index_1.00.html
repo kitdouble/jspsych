@@ -251,6 +251,7 @@ const test_block = {
       return jsPsych.randomization.sampleWithoutReplacement([3,8,13,18],3)
     },
   choices: ["Blicket", 'Snarg'],
+  monotonic_label: mono_label,
   colour_prob: function(){
 
       if(jsPsych.timelineVariable('category') == 'noMono') return colour_set;
