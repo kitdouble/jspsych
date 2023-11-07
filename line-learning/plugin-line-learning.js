@@ -66,6 +66,13 @@ var jsPsychLineLearning = (function (jspsych) {
               pretty_name: "The category memebership of the current trial",
               default: null,
           },
+                /** Colours  */
+          colours: {
+              type: jspsych.ParameterType.STRING,
+              pretty_name: "The colours used for the stimuli",
+              default: ["red", "green", "blue", "yellow"],
+              array: true
+          },
                 /** The probabilities of a red, green, blue, and yellow square respectively */
           colour_prob: {
               type: jspsych.ParameterType.INT,
@@ -711,14 +718,14 @@ var sum = trial.line_lengths.reduce((accumulator, currentValue) => {
 
 
   if(trial.empirical_col_probs == true) {
-  var colour_array = jsPsych.randomization.sampleWithReplacement(["red", "green", "blue", "yellow"], sum, trial.colour_prob)
+  var colour_array = jsPsych.randomization.sampleWithReplacement(trial.colours, sum, trial.colour_prob)
 }
 
 
 
   if(trial.empirical_col_probs == false) {
   var eprobs = [Math.round(sum*trial.colour_prob[0]/100), Math.round(sum*trial.colour_prob[1]/100), Math.round(sum*trial.colour_prob[2]/100), Math.round(sum*trial.colour_prob[3]/100)]
-  var colour_array = jsPsych.randomization.repeat(["red", "green", "blue", "yellow"], eprobs, false)
+  var colour_array = jsPsych.randomization.repeat(trial.colours, eprobs, false)
 
 }
 
