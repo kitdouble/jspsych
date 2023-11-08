@@ -183,11 +183,8 @@
 
 // test block
 
-const test_block = {
-
-  timeline: [
-
-  {
+var   baseline = {
+  timeline: [{
     type: jsPsychLineLearning,
     data: {test_type: "Baseline trials"},
      on_start: function(trial) {
@@ -212,12 +209,25 @@ const test_block = {
         return [nm1, nm2, nm3, nm4];
 
       }}
+}],
+  timeline_variables: [
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"}
+    ],
+    randomize_order: true
+}
 
 
-  },
 
 
-  {
+  var relational = {
+    timeline: [{
     type: jsPsychLineLearning,
     data: {test_type: "Relation test trials"},
     category: jsPsych.timelineVariable('category'),
@@ -232,10 +242,24 @@ const test_block = {
     colour_prob: [25,25,25,25],
     empirical_col_probs: false
 
-  },
+  }],
+    timeline_variables: [
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"}
+    ],
+    randomize_order: true
+  }
 
 
-  {
+
+  var feature = {
+    timeline: [{
     type: jsPsychLineLearning,
     data: {test_type: "Feature test trials"},
          on_start: function(trial) {
@@ -263,10 +287,24 @@ const test_block = {
       }}
 
 
- },
+ }],
+    timeline_variables: [
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"},
+    {category: "Mono"},
+    {category: "noMono"}
+    ],
+    randomize_order: true
+  }
 
 
- {
+
+ var crossMapped = {
+  timeline: [{
   type: jsPsychLineLearning,
   data: {test_type: "Cross-mapped test trials"},
        on_start: function(trial) {
@@ -291,12 +329,7 @@ const test_block = {
       }
 
 
-    },
-
-}
-
-
-],
+    }}],
   timeline_variables: [
     {category: "Mono"},
     {category: "noMono"},
@@ -308,12 +341,15 @@ const test_block = {
     {category: "noMono"}
     ],
     randomize_order: true
-
-
-
 }
 
 
+test_order = jsPsych.randomization.shuffle([baseline, crossMapped, feature, relational]);
+
+  var test_block = {
+    timeline: test_order ,
+    randomize_order: true
+  }
 
 
 
