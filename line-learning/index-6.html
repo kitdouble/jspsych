@@ -510,12 +510,12 @@ exp_condition = null;
 async function createExperiment(){
   const condition = await jsPsychPipe.getCondition("qgaUKm7LqjEZ");
   if (condition == 0){jsPsych.data.addProperties({condition: "JOL"});}
-  if (condition == 1){jsPsych.data.addProperties({condition: "Control"});}
+  if (condition == 1){jsPsych.data.addProperties({condition: "JOL"});}
 
 
 
   if(condition == 0) { timeline = condition_1_timeline; }
-  if(condition == 1) { timeline = condition_2_timeline; }
+  if(condition == 1) { timeline = condition_1_timeline; }
 
   
   
