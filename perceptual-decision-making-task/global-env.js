@@ -1,3 +1,4 @@
+  // Legacy demographics
   var welcome = {
     timeline: [
       {type: jsPsychSurveyText,
@@ -51,9 +52,7 @@
 
 
 
-
-
-  // Save to server
+  // Save to server [legacy]
     function saveDataServer(data){
       var xhr = new XMLHttpRequest();
         xhr.open('POST', 'write_data.php'); // 
