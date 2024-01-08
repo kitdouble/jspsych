@@ -71,7 +71,7 @@
 
 // Settings (set these)
 
-  const DataPipe_ID = "yWP5ZAEpTdP9" // The DataPipe ID for where the data should be stored
+  const DataPipe_ID = "QFKhQcfZUGOD" // The DataPipe ID for where the data should be stored
 
   const sona_experiment_id = "NA"; // The SONA experiment ID 
   const sona_credit_token = "NA"; // The SONA credit token 
@@ -82,9 +82,11 @@
 
 // Global parameters (might need to change)
   const staircase_on = true; // Turn on/off staircasing 
+
+
   
   var no_trials = 36; // number of trials in each block
-  var no_practice_trials = 26; // number of trials in the practice block
+  var no_practice_trials = 1; // number of trials in the practice block
   var total_blocks = 3; //note only updates instructions
   dots_diff = 4.25 // log space starting difficulty. In log space, this is about 70 dots shown for the first one.
 
@@ -153,7 +155,8 @@
 
   var instructions = {
     type: jsPsychInstructions,
-    pages: [
+    pages: function(){
+      if(ratings_on == true) return [
       '<p class="instructions">Welcome to the task!</p>' +
       '<p class="instructions">In this task, we will ask you to judge which of two images contains more dots, before asking you to rate your confidence in your judgement.</p>' +
       '<p class="instructions">At the beginning of each trial, you will be presented with a black cross in the middle of the screen. Focus your attention on it. Then, two black boxes with a number of white dots will be flashed and you will be asked to judge which box had a higher number of dots.</p>' +
@@ -165,7 +168,18 @@
       '<p class="instructions">In this practice phase we will tell you whether your judgements are right or wrong. <br></br>If you are <strong>correct</strong>, the box that you selected will be outlined in <font color="green"><strong>green</strong></font>. <br>If you are <strong>incorrect</strong>, the box that you selected will be outlined in <font color="red"><strong>red</strong></font>.</p>' +
       '<p class="instructions">You will not need to rate your confidence of your judgements on these trials.</p>' 
 
-      ],
+      ]
+       if(ratings_on == false) return [
+      '<p class="instructions">Welcome to the task!</p>' +
+      '<p class="instructions">In this task, we will ask you to judge which of two images contains more dots.</p>' +
+      '<p class="instructions">At the beginning of each trial, you will be presented with a black cross in the middle of the screen. Focus your attention on it. Then, two black boxes with a number of white dots will be flashed and you will be asked to judge which box had a higher number of dots.</p>' +
+      '<p class="instructions">If the box on the <strong>left</strong> had more dots, <strong>press W</strong>.<br> If the box on the <strong>right</strong> had more dots, <strong> press E</strong>.</p>' +
+      '<p class="instructions">Please respond quickly and to the best of your ability.</p>',
+      '<p class="instructions">We will now ask you to carry out some practice trials. Please respond only when the dots have disappeared.</p>' +  
+      '<p class="instructions">In this practice phase we will tell you whether your judgements are right or wrong. <br></br>If you are <strong>correct</strong>, the box that you selected will be outlined in <font color="green"><strong>green</strong></font>. <br>If you are <strong>incorrect</strong>, the box that you selected will be outlined in <font color="red"><strong>red</strong></font>.</p>' 
+
+      ]
+    },
     show_clickable_nav: true
   }
 
@@ -174,11 +188,18 @@
   var practice_end = {
     type: jsPsychInstructions,
 
-    pages:  [
+    pages:  function(){
+       if(ratings_on == true) return  [
       '<p class="instructions">In the task proper, you will not be provided accuracy feedback on your judgements, but the box you selected will be outlined in <font color="blue"><strong>blue</strong></font>.</p>' +
       '<p class="instructions">You will be asked to rate your confidence in your judgement on a rating scale after each trial, which will be explained next.</p>' 
 
-      ],
+      ]
+
+      if(ratings_on == false) return  [
+      '<p class="instructions">In the task proper, you will not be provided accuracy feedback on your judgements, but the box you selected will be outlined in <font color="blue"><strong>blue</strong></font>.</p>' 
+
+      ]
+    },
     show_clickable_nav: true
   }
 
@@ -187,13 +208,23 @@
   var test_start = {
     type: jsPsychInstructions,
 
-    pages:  [
+    pages:  function(){
+     if(ratings_on == true) return  [
       '<p class="instructions">The task proper is divided into '+total_blocks+' blocks of '+no_trials+' trials, where you can pause for a break before every block.</p>' +
-      '<p class="instructions">There are no time limits on your responses to the dots and on your confidence ratings.</p>' +
-  //'<p class="instructions">You can receive up to 2 pounds bonus if your performance is satisfactory.</p>' +
+      '<p class="instructions">There are no time limits on your responses to the dots or on your confidence ratings.</p>' +
+      //'<p class="instructions">You can receive up to 2 pounds bonus if your performance is satisfactory.</p>' +
       '<p class="instructions">As a reminder: <br>If the box on the <strong>left</strong> had more dots, press <strong>W</strong>.<br> If the box on the <strong>right</strong> had more dots, press <strong>E</strong>.</p>' 
 
-      ],
+      ]
+
+      if(ratings_on == false) return  [
+      '<p class="instructions">The task proper is divided into '+total_blocks+' blocks of '+no_trials+' trials, where you can pause for a break before every block.</p>' +
+      '<p class="instructions">There are no time limits on your responses to the dots.</p>' +
+      //'<p class="instructions">You can receive up to 2 pounds bonus if your performance is satisfactory.</p>' +
+      '<p class="instructions">As a reminder: <br>If the box on the <strong>left</strong> had more dots, press <strong>W</strong>.<br> If the box on the <strong>right</strong> had more dots, press <strong>E</strong>.</p>' 
+
+      ]
+    },
     show_clickable_nav: true
   }
 
@@ -250,7 +281,14 @@
       {start: 4, require: true, disable: false, header: '<p class="instructions">If you are <strong>somewhat sure</strong> about being correct, you should select a rating between the two descriptions.</p>' +
       '<p class="instructions">If you understand how to use and take advantage of the whole rating scale, choose any point on the rating scale and click &apos;Submit&apos; to continue.</p>'}
 
-      ]
+      ],
+    conditional_function: function(){
+         if(ratings_on === true){
+          return true;
+        } else {
+          return false;
+        }
+    }
 
 
   }
@@ -423,7 +461,7 @@
 
     ],
     conditional_function: function(){
-      if(provide_feedback === true){
+      if(provide_feedback === true | ratings_on === false){
         return false;
       } else {
         return true;
@@ -502,7 +540,7 @@
       data.response = jsPsych.data.get().filter({trial_type: "Stimulus Response"}).last().values()[0].response;
       data.correct = jsPsych.data.get().filter({trial_type: "Stimulus Response"}).last().values()[0].correct;
       data.target_left = jsPsych.timelineVariable('target_left');
-      if(provide_feedback == false){
+      if(provide_feedback == false & ratings_on == true){
         data.confidence = jsPsych.data.get().filter({trial_type: "Confidence Rating"}).last().values()[0].response;
         data.feedback = "False";
       } else {
@@ -512,11 +550,6 @@
       data.trial_type = "Summary Trial"
       trialnum++;
 
-      data.Extra = data.Extra;
-      data.Agree = data.Agree;
-      data.Consc = data.Consc;
-      data.EmoStab = data.EmoStab;
-      data.Open = data.Open;
     }
   },
 
@@ -535,6 +568,16 @@ randomize_order: true
 
 
 
+var effiacy = {
+  type: jsPsychHtmlSliderResponse,
+  data: {trial_type: "GlobalConfidenceRating" },
+  stimulus: `<div style = "color: darkblue"><h2>Please rate how you think you perfromed on the <strong>last</strong> block on the scale below:</h2></div>`,
+  require_movement: true,
+  labels: ['50% (chance level)', "60%", "70%", "80%", "90%", '100% (perfect)']
+}
+
+
+
 
 var debug = {
   type: jsPsychSurveyText,
@@ -548,6 +591,7 @@ var debug = {
   // Blocks
 
 const practice_block = {
+  data: {phase: "Practice"},
   timeline: [dot_trial],
   repetitions: no_practice_trials/2,
   on_timeline_start: function(){
@@ -557,6 +601,7 @@ const practice_block = {
 
 
 const test_block = {
+  data: {phase: "Test"},
   timeline: [dot_trial],
   repetitions: no_trials/2,
   on_timeline_start: function(){
@@ -627,13 +672,13 @@ const test_block = {
 
 // Create Experiment
 
-condition_1_timeline = [ browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, instructions, practice_block, practice_end, conf_instruc, test_start, test_block, new_block, test_block, new_block, test_block, debug, save_data, DEBRIEF_SONA];
+condition_1_timeline = [browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, instructions, practice_block, practice_end, conf_instruc, test_start, test_block, effiacy, new_block, test_block, effiacy, new_block, test_block, effiacy, debug, save_data, DEBRIEF_SONA];
 
 async function createExperiment(){
   const condition = await jsPsychPipe.getCondition(DataPipe_ID);
   jsPsych.data.addProperties({condition: condition});
-  if(condition == 0) { timeline = condition_1_timeline; }
-  if(condition == 1) { timeline = condition_1_timeline; }
+  if(condition == 0) {ratings_on = false; timeline = condition_1_timeline; }
+  if(condition == 1) {ratings_on = true; timeline = condition_1_timeline; }
   jsPsych.run(timeline);
 }
 
