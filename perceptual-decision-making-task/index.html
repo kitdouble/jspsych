@@ -570,7 +570,9 @@ randomize_order: true
 
 var effiacy = {
   type: jsPsychHtmlSliderResponse,
-  data: {trial_type: "GlobalConfidenceRating" },
+  on_finish: function(data){
+    data.trial_type = "GlobalConfidenceRating";
+  },
   stimulus: `<div style = "color: darkblue"><h2>Please rate how you think you perfromed on the <strong>last</strong> block on the scale below:</h2></div>`,
   require_movement: true,
   labels: ['50% (chance level)', "60%", "70%", "80%", "90%", '100% (perfect)']
