@@ -678,8 +678,8 @@ condition_1_timeline = [browser_check, enter_fullscreen, participant_info_paid, 
 
 async function createExperiment(){
   const condition = await jsPsychPipe.getCondition(DataPipe_ID);
-  jsPsych.data.addProperties({condition: condition});
-  if(condition == 0) {ratings_on = false; timeline = condition_1_timeline; }
+  jsPsych.data.addProperties({condition: 1});
+  if(condition == 0) {ratings_on = true; timeline = condition_1_timeline; }
   if(condition == 1) {ratings_on = true; timeline = condition_1_timeline; }
   jsPsych.run(timeline);
 }
