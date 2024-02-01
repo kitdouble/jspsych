@@ -74,7 +74,7 @@ jsPsych.data.addProperties({participant_id: PROLIFIC_PID});
   const save_data = {
     type: jsPsychPipe,
     action: "save",
-    experiment_id: "ijPKR0LmVe22",
+    experiment_id: "fn1eXIqGeaoR",
     filename: filename,
     data_string: ()=>jsPsych.data.get().csv()
   };
@@ -459,7 +459,7 @@ condition_2_timeline = [preload, participant_info_paid, participant_info_SONA, i
 
 
 async function createExperiment(){
-  const condition = await jsPsychPipe.getCondition("ijPKR0LmVe22");
+  const condition = await jsPsychPipe.getCondition("fn1eXIqGeaoR");
   
   if(condition == 0) { timeline = condition_1_timeline; jsPsych.data.addProperties({condition: 'NoCR'});}
   if(condition == 1) { timeline = condition_2_timeline; jsPsych.data.addProperties({condition: 'CR'});}
