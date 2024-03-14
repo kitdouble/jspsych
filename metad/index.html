@@ -364,7 +364,19 @@
       canvas_size: [788, 790],
       stimulus: function(c){
 
-        drawStim(c, Math.round(Math.exp(dots_diff)), jsPsych.timelineVariable('target_left'))
+        if(staircase_on == true){ drawStim(c, Math.round(Math.exp(dots_diff)), jsPsych.timelineVariable('target_left')) }
+        if(staircase_on == false){ 
+
+
+          var list = [];
+          for (var i = 1; i <= 70; i++) {
+              list.push(i);
+          }
+          dots_diff = jsPsych.randomization.sampleWithReplacement(list, 1);  
+
+          drawStim(c, Math.round(dots_diff), jsPsych.timelineVariable('target_left')) 
+
+        }
 
       },
       choices: "NO_KEYS",
@@ -373,6 +385,7 @@
         data.stimdevi = dots_diff;
       }
     },
+
 
 
 // Response
@@ -550,7 +563,8 @@
       } else {
         data.feedback = "True";
       }
-      data.stimdevi = jsPsych.data.get().filter({trial_type: "Stimulus Presentation"}).last().values()[0].stimdevi;
+      if(staircase_on == true) data.stimdevi = Math.round(Math.exp(jsPsych.data.get().filter({trial_type: "Stimulus Presentation"}).last().values()[0].stimdevi));
+      if(staircase_on == false) data.stimdevi = jsPsych.data.get().filter({trial_type: "Stimulus Presentation"}).last().values()[0].stimdevi;
       data.trial_type = "Summary Trial"
       trialnum++;
 
