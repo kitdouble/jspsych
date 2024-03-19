@@ -512,7 +512,8 @@ if(typeof SONA_PID != 'undefined'){
   condition_1_timeline = [participant_info_paid, participant_info_SONA, instructions, conf_instruc, test_block, debug, save_data, DEBRIEF_SONA];
 
   async function createExperiment(){
-    const condition = await jsPsychPipe.getCondition(DataPipe_ID);
+    //const condition = await jsPsychPipe.getCondition(DataPipe_ID);
+    condition = 0;
     jsPsych.data.addProperties({condition: condition});
 
      if(condition == 0) {  ratings_on = false; }
