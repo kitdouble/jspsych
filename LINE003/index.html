@@ -72,7 +72,7 @@
 
 // Settings (set these)
 
-  const DataPipe_ID = "0qjUuSBDHTnZ" // The DataPipe ID for where the data should be stored
+  const DataPipe_ID = "dt9r4UULfGwp" // The DataPipe ID for where the data should be stored
 
   const sona_experiment_id = "NA"; // The SONA experiment ID 
   const sona_credit_token = "NA"; // The SONA credit token 
@@ -89,7 +89,7 @@
   var blocknum = 0;
   aborted = false;
 
-  var colour_set= jsPsych.randomization.sampleWithoutReplacement([25,25,25,25],4)
+  var colour_set= jsPsych.randomization.sampleWithoutReplacement([30,30,20,20],4)
   var mono_label  = jsPsych.randomization.sampleWithoutReplacement(["Blicket", "Snarg"],1)
 
 //////////////////////////////////
@@ -550,7 +550,7 @@ const practice_block = {
 }
 
 
-test_order = jsPsych.randomization.shuffle([baseline]);
+test_order = jsPsych.randomization.shuffle([baseline, feature, relational, crossMapped]);
 
 const test_block = {
   timeline: test_order
