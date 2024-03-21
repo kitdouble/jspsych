@@ -513,7 +513,7 @@ if(typeof SONA_PID != 'undefined'){
 
   async function createExperiment(){
     //const condition = await jsPsychPipe.getCondition(DataPipe_ID);
-    condition = 0;
+    condition = 1;
     jsPsych.data.addProperties({condition: condition});
 
      if(condition == 0) {  ratings_on = false; }
