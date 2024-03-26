@@ -65,7 +65,7 @@
 
 // Settings (set these)
 
-  const DataPipe_ID = "F6SV9kzynyli" // The DataPipe ID for where the data should be stored
+  const DataPipe_ID = "eio2jbxClaYI" // The DataPipe ID for where the data should be stored
 
   const sona_experiment_id = "NA"; // The SONA experiment ID 
   const sona_credit_token = "NA"; // The SONA credit token 
@@ -100,21 +100,17 @@
     type: jsPsychInstructions,
     pages: function(){
       if(ratings_on == true) return [
-        '<p class="instructions">Welcome to the task!</p>' +
-        '<p class="instructions">In this test, you will be presented with a few brief details about an emotional situation, and asked to choose from four responses the most effective course of action to manage both the emotions the person is feeling and the problems they face in that situation. </p>' +
-        '<p class="instructions">Although more than one course of action might be acceptable, you are asked to choose what you think the most effective response for that person in that situation would be. </p>' +
-        '<p class="instructions">Remember, you are not necessarily choosing what you would do, or the nicest thing to do, but choosing the most effective response for that situation. </p>' +
-        '<p class="instructions">Please respond quickly and to the best of your ability.</p>',
+         '<p class="instructions">Welcome to the task!</p>' +
+        '<p class="instructions">In this task, you will be asked to watch a series of short videos, each less than one second long in length. Each video shows a person briefly expressing an emotion on his/her face. When the video has finished playing, you will be asked to select which of seven emotions they felt.</p>' +
+        '<p class="instructions"><strong>Please look carefully as each video will be shown only once.</strong></p>',
         '<p class="instructions">After each item, you will then rate your confidence in your judgement on a scale with the mouse.</p>' +
         '<p class="instructions">Please do your best to rate your confidence accurately and do take advantage of the whole rating scale.</p>'
 
         ]
        if(ratings_on == false) return [
         '<p class="instructions">Welcome to the task!</p>' +
-        '<p class="instructions">In this test, you will be presented with a few brief details about an emotional situation, and asked to choose from four responses the most effective course of action to manage both the emotions the person is feeling and the problems they face in that situation. </p>' +
-        '<p class="instructions">Although more than one course of action might be acceptable, you are asked to choose what you think the most effective response for that person in that situation would be. </p>' +
-        '<p class="instructions">Remember, you are not necessarily choosing what you would do, or the nicest thing to do, but choosing the most effective response for that situation. </p>' +
-        '<p class="instructions">Please respond quickly and to the best of your ability.</p>',
+        '<p class="instructions">In this task, you will be asked to watch a series of short videos, each less than one second long in length. Each video shows a person briefly expressing an emotion on his/her face. When the video has finished playing, you will be asked to select which of seven emotions they felt.</p>' +
+        '<p class="instructions"><strong>Please look carefully as each video will be shown only once.</strong></p>'
 
         ]
      },
@@ -251,6 +247,8 @@ var preload = {
 'img/56_no_loop.gif'
 ]
 }
+
+
 stimuli = [
 
   {item: 'JACBART1', location: 'img/01_no_loop.gif'},
@@ -353,6 +351,18 @@ var STEM_trial = {
     data.item = jsPsych.timelineVariable('item');
 
 
+    console.log(data.response.Q0)
+
+if(data.response.Q0 == "Happiness"){data.selection = 1}
+if(data.response.Q0 == "Contempt"){data.selection = 2}
+if(data.response.Q0 == "Disgust"){data.selection = 3}
+if(data.response.Q0 == "Sadness"){data.selection = 4}
+if(data.response.Q0 == "Anger"){data.selection = 5}
+if(data.response.Q0 == "Surprise"){data.selection = 6}
+if(data.response.Q0 == "Fear"){data.selection = 7}
+
+
+
 
 
 // Scoring
@@ -361,6 +371,69 @@ var STEM_trial = {
 
 
 
+
+
+
+
+if(data.item == "JACBART1" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART2" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART3" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART4" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART5" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART6" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART7" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART8" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART9" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART10" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART11" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART12" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART13" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART14" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART15" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART16" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART17" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART18" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART19" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART20" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART21" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART22" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART23" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART24" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART25" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART26" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART27" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART28" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART29" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART30" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART31" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART32" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART33" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART34" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART35" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART36" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART37" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART38" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART39" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART40" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART41" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART42" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART43" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART44" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART45" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART46" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART47" & data.selection == 5){data.correct = 1}
+if(data.item == "JACBART48" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART49" & data.selection == 7){data.correct = 1}
+if(data.item == "JACBART50" & data.selection == 2){data.correct = 1}
+if(data.item == "JACBART51" & data.selection == 1){data.correct = 1}
+if(data.item == "JACBART52" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART53" & data.selection == 4){data.correct = 1}
+if(data.item == "JACBART54" & data.selection == 6){data.correct = 1}
+if(data.item == "JACBART55" & data.selection == 3){data.correct = 1}
+if(data.item == "JACBART56" & data.selection == 5){data.correct = 1}
+
+
+console.log(data.correct)
 
   },
 },
