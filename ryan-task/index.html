@@ -743,7 +743,10 @@ var rpm_instructions = {
 
       {type: jsPsychFullscreen,
       message: '<p>You need to be in fullscreen mode to continue the experiment! <br></br> Please click the button below to enter fullscreen mode.<br></br><p>',
-      fullscreen_mode: true
+      fullscreen_mode: true,
+      on_finish: function(){
+        in_fullscreen = true;
+      }
     }
     ],
     conditional_function: function(){
