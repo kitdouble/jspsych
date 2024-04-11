@@ -140,31 +140,59 @@
 
 
 
+
+
   // Browser Check
 
 
   var browser_check = {
+    timeline: [
+    {  
     type: jsPsychBrowserCheck,
     inclusion_function: (data) => {
       return ['chrome', 'firefox'].includes(data.browser) && data.mobile === false;
     },
     exclusion_message: (data) => {
       aborted = true;
-      return `<p>You must use Chrome or Firefox to complete this experiment.</p>`
+          if(data.mobile){
+      return '<p>You must use a desktop/laptop computer to participate in this experiment.</p>';
+    } else if(data.browser !== 'chrome'){
+      return '<p>You must use Chrome or Firefox as your browser to complete this experiment.</p>'
+    }
     },
-  };
+  }
+  ],
+  conditional_function: function(){
+      if(pilot === 'true'){
+        return false;
+      } else {
+        return true;
+      }
+    }}
+
 
 
 // Enter Fullscreen
 
   var enter_fullscreen = {
-    type: jsPsychFullscreen,
+    timeline: [
+    {type: jsPsychFullscreen,
     message: '<p>To take part in the experiment, your browser must be in fullscreen mode. Exiting fullscreen mode will pause the experiment. <br></br>Please click the button below to enable fullscreen mode and continue.</p>',
     fullscreen_mode: true,
     on_finish: function(){
       in_fullscreen = true;
     }
   }
+  ],
+    conditional_function: function(){
+      if(pilot === 'true'){
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
 
 
 
