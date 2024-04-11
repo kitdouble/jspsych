@@ -96,7 +96,7 @@
   var trialnum = 1;
   var blocknum = 1;
   aborted = false;
-
+  phase = null;
 
   jsPsych.data.addProperties({random_diff: random_diff});
   jsPsych.data.addProperties({staircase_on: staircase_on});
@@ -629,6 +629,7 @@ var dot_trial = {
     },
     on_finish: function(data){
       data.rt = jsPsych.data.get().filter({trial_type: "Stimulus Response"}).last().values()[0].rt;
+      data.phase = phase;
       data.response = jsPsych.data.get().filter({trial_type: "Stimulus Response"}).last().values()[0].response;
       data.correct = jsPsych.data.get().filter({trial_type: "Stimulus Response"}).last().values()[0].correct;
       data.target_left = jsPsych.timelineVariable('target_left');
@@ -679,16 +680,17 @@ const practice_block = {
   repetitions: no_practice_trials/2,
   on_timeline_start: function(){
     provide_feedback = true; 
+    phase = "Practice";
   }
 }
 
 
 const test_block = {
-  data: {phase: "Test"},
   timeline: [dot_trial],
   repetitions: no_trials/2,
   on_timeline_start: function(){
     provide_feedback = false; 
+    phase = "Test";
   }
 }
 
@@ -761,7 +763,7 @@ var rpm_instructions = {
 
  var ravens = {
   data: function(){
-    return {trialnum: trialnum, blocknum: blocknum}
+    return {trialnum: trialnum, blocknum: blocknum, phase: "RPM"}
   },
   timeline: [
 
