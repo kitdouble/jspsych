@@ -13,7 +13,7 @@ button_label_next: "Start",
 allow_backward: false
 }],
 conditional_function: function(){
- if(typeof SONA_PID === 'undefined'){return true} else{ return false}
+ if(typeof SONAID === 'undefined'){return true} else{ return false}
 }
 }
 
@@ -35,7 +35,7 @@ button_label_next: "Start",
 allow_backward: false
 }],
 conditional_function: function(){
- if(typeof SONA_PID === 'undefined'){return false} else{ return true}
+ if(typeof SONAID === 'undefined'){return false} else{ return true}
 }
 }
 
@@ -54,6 +54,6 @@ var DEBRIEF_SONA = {
     allow_backward: false
   }],
   conditional_function: function(){
-    if(typeof SONA_PID === 'undefined'){return false} else{ return true}
+    if(typeof SONAID === 'undefined'){return false} else{ return true}
   }
 }
