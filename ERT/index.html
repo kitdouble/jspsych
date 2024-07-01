@@ -378,7 +378,7 @@ condition_1_timeline = [preload, participant_info_paid, demographics, instructio
 
   async function createExperiment(){
     var condition = await jsPsychPipe.getCondition(DataPipe_ID);
-    if(condition == 0) { timeline = condition_1_timeline; exp_cond = "Low"}
+    if(condition == 0) { timeline = condition_1_timeline; exp_cond = "High"}
     if(condition == 1) { timeline = condition_1_timeline; exp_cond = "High"}
         jsPsych.data.addProperties({condition: exp_cond});
     jsPsych.run(timeline);
