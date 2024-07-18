@@ -100,6 +100,35 @@
 
 
 
+// Preload
+
+
+  var preload = {
+    type: jsPsychPreload,
+    images: ['Stim/pattern-1.png',
+      'Stim/pattern-2.png',
+      'Stim/pattern-3.png',
+      'Stim/pattern-4.png',
+      'Stim/pattern-5.png',
+      'Stim/pattern-6.png',
+      'Stim/pattern-7.png',
+      'Stim/pattern-8.png',
+      'Stim/pattern-9.png',
+      'Stim/pattern-10.png',
+      'Stim/pattern-11.png',
+      'Stim/pattern-12.png',
+      'Stim/pattern-13.png',
+      'Stim/pattern-14.png',
+      'Stim/pattern-15.png',
+      'Stim/pattern-16.png',
+      'Stim/pattern-17.png',
+      'Stim/pattern-18.png',
+      'Stim/pattern-19.png',
+      'Stim/pattern-20.png']
+}
+
+
+
   // Browser Check
 
 
@@ -447,7 +476,7 @@ if(typeof SONAID != 'undefined'){
 
 // Create Experiment
 //browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, demographics, instructions,
-  condition_1_timeline = [ browser_check, enter_fullscreen, participant_info_paid, participant_info_SONA, demographics, instructions, test_block, debug, save_data, DEBRIEF_SONA ];
+  condition_1_timeline = [ browser_check, preload, enter_fullscreen, participant_info_paid, participant_info_SONA, demographics, instructions, test_block, debug, save_data, DEBRIEF_SONA ];
 
   async function createExperiment(){
     const condition = await jsPsychPipe.getCondition(DataPipe_ID);
