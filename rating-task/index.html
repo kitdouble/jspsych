@@ -294,7 +294,7 @@ var a_trial = {
 
       response = Number(jsPsych.data.get().filter({trial_type: "Stimulus Response"}).last().values()[0].response);
       response = response - 11;
-      return ("<h3 style = 'color: white;'>You gave a rating of "+ response +"<br>How confident are you?</h3>" +
+      return ("<h3 style = 'color: white;'>How confident are you in your last response?</h3>" +
      '<div id = "conf1" class = "conf" style = "position: absolute; height: 25px; background-color: transparent; width: 795px; margin-top: 4px; margin-left: 0px; border-left: 5px solid white; border-right: 5px solid white; "></div>')
   },
       slider_width: 800,
