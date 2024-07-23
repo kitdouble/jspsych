@@ -258,15 +258,14 @@ var a_trial = {
       return ('<img src="Stim/'+ jsPsych.timelineVariable('stim_image')+'" style="width:500px;height:600px;">' +
      "<h3 style = 'color: white;'>How much do you like this picture?</h3>" +
      '<div id = "conf1" class = "conf" style = "position: absolute; height: 25px; background-color: transparent; width: 795px; margin-top: 4px; margin-left: 0px; border-left: 5px solid white; border-right: 5px solid white; "></div>' +
-     '<div id = "conf1" class = "conf" style = "position: absolute; height: 25px; background-color: transparent; width: 400px; margin-top: 4px; margin-left: 0px; border-right: 5px solid white; "></div>' +
-          '<div id = "conf1" class = "conf" style = "position: absolute; height: 20px; background-color: transparent; width: 390px; margin-top: 7px; margin-left: 205px; border-left: 3px solid white; border-right: 3px solid white; "></div>')
+     '<div id = "conf1" class = "conf" style = "position: absolute; height: 25px; background-color: transparent; width: 400px; margin-top: 4px; margin-left: 0px; border-right: 5px solid white; "></div>')
  },
       min: 1,
       max: 21,
       step: 1,
       slider_width: 800,
       require_movement: true,
-      labels: ['<p style = "color: white; font-size: 15pt;">-10</p>', '<p style = "color: white; font-size: 15pt;">-5</p>', '<p style = "color: white; font-size: 15pt;">0</p>', '<p style = "color: white; font-size: 15pt;">+5</p>', '<p style = "color: white; font-size: 15pt;">+10</p>'],
+      labels: ['<p style = "color: white; font-size: 15pt;">-10</p>',  '<p style = "color: white; font-size: 15pt;">0</p>', '<p style = "color: white; font-size: 15pt;">+10</p>'],
       button_label: "Submit",
       on_finish: function(data){
         data.trial_type = "Stimulus Response";
