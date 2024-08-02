@@ -57,8 +57,8 @@
    },
  on_finish: function(data) {
    if(aborted == true){alert("You must use Chrome or Firefox to complete this experiment.")}
-    // if(aborted == false) {  if(jsPsych.data.get().filter({trial_type: "Summary Trial"}).select('correct').mean() < 0.55){window.location = attention_redirect_link} else {window.location = redirect_link}}
-    jsPsych.data.get().localSave('csv','mydata.csv');
+    if(aborted == false) {  if(jsPsych.data.get().filter({trial_type: "Summary Trial"}).select('correct').mean() < 0.55){window.location = attention_redirect_link} else {window.location = redirect_link}}
+    //jsPsych.data.get().localSave('csv','mydata.csv');
    }
 })
 
@@ -750,7 +750,7 @@ if(typeof SONAID != 'undefined'){
 
 // Create Experiment
 
-  condition_1_timeline = [browser_check, preload, enter_fullscreen, participant_info_paid, participant_info_SONA, demographics, instructions, test_block, save_data, debug, DEBRIEF_SONA ];
+  condition_1_timeline = [browser_check, preload, enter_fullscreen, participant_info_paid, participant_info_SONA, demographics, instructions, test_block, debug, save_data, DEBRIEF_SONA ];
 
   async function createExperiment(){
     const condition = await jsPsychPipe.getCondition(DataPipe_ID);
