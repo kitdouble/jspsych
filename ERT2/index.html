@@ -244,7 +244,7 @@ const feedback_nohelp = {
     type: jsPsychImageKeyboardResponse,
     stimulus: function(data){
 
- if(condition == "High"){
+ if(exp_cond == "High"){
 
         x = Math.round(jsPsych.randomization.sampleNormal(8.5,1.5))
         if(x > 10){x = 10}
@@ -254,7 +254,7 @@ const feedback_nohelp = {
 
        return(feeds[x-1])
      }
- if(condition == "Low"){
+ if(exp_cond == "Low"){
 
    x = Math.round(jsPsych.randomization.sampleNormal(3.5,1.5))
    if(x > 10){x = 10}
@@ -281,7 +281,7 @@ const feedback_help = {
     type: jsPsychImageKeyboardResponse,
     stimulus: function(data){
 
- if(condition == "High"){
+ if(exp_cond == "High"){
 
         x = Math.round(jsPsych.randomization.sampleNormal(7,1.5))
         if(x > 10){x = 10}
@@ -291,7 +291,7 @@ const feedback_help = {
 
        return(feeds[x-1])
      }
- if(condition == "Low"){
+ if(exp_cond == "Low"){
 
    x = Math.round(jsPsych.randomization.sampleNormal(2,1.5))
    if(x > 10){x = 10}
